@@ -5,7 +5,7 @@ import epam.exercise.analizer.service.EmployeeReportService;
 public class CommonEmployeeReportService implements EmployeeReportService {
 
     @Override
-    public void createReport() {
+    public void createEmployeeReport() {
 //        TODO: implement logic
     }
 }
