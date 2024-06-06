@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 
 /**
- * CsvEmployeesFileReaderService used to read and parse csv data, implements {@link EmployeesFileReaderService}
+ * CsvEmployeesFileReaderService used to read and parse csv data, implementation of {@link EmployeesFileReaderService}
  */
 public class CsvEmployeesFileReaderService implements EmployeesFileReaderService {
 

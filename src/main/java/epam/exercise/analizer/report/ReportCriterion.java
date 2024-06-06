@@ -1,9 +1,9 @@
 package epam.exercise.analizer.report;
 
 public enum ReportCriterion {
-    OVERPAID("Overpaid employee"),
-    UNDERPAID("Underpaid employee"),
-    TOO_LONG_REPORTING_LINE("Employee with too long reporting line");
+    OVERPAID("Overpaid employees related to direct subordinates average salary"),
+    UNDERPAID("Underpaid employees related to direct subordinates average salary"),
+    TOO_LONG_REPORTING_LINE("Employees with too long reporting line to CEO");
 
     private final String description;
 

@@ -9,7 +9,7 @@ import java.util.Map;
 
 
 /**
- * The interface EmployeesAnalyzingService.
+ * The interface EmployeesAnalyzingService to analyze employees data by some conditions.
  */
 public interface EmployeesAnalyzingService {
 

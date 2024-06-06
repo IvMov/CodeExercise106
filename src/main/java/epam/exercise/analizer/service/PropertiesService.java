@@ -2,7 +2,6 @@ package epam.exercise.analizer.service;
 
 /**
  * Interface representing a service for retrieving properties.
- * This service provides a method to retrieve the value of a property given its key.
  */
 public interface PropertiesService {
 

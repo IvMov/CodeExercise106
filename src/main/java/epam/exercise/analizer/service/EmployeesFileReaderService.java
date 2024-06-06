@@ -6,7 +6,7 @@ import epam.exercise.analizer.exception.ReportCreationException;
 import java.util.Map;
 
 /**
- * The interface Employees file reader service.
+ * The interface EmployeesFileReaderService for reading files.
  */
 public interface EmployeesFileReaderService {
 

@@ -9,6 +9,7 @@ import java.util.Map;
 
 /**
  * The ConsoleEmployeesReportPrintService implementation of {@link EmployeesReportPrintService}.
+ * Used to print report to the console.
  */
 public class ConsoleEmployeesReportPrintService implements EmployeesReportPrintService {
 
