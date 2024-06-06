@@ -2,9 +2,6 @@ package epam.exercise.analizer.dto;
 
 import epam.exercise.analizer.report.ReportCriterion;
 
-import java.math.BigDecimal;
-import java.util.Objects;
-
 /**
  * Represents a simple output employee report data,
  * contains all necessary data to identify and represent employee in report purposes
@@ -15,7 +12,7 @@ import java.util.Objects;
  * @param reportCriterion the criterion of type {@link ReportCriterion} - reason why employee was added to report
  * @param criterionValue the value of deviation from some threshold criterion
  */
-public record EmployeeReportDto(Long id, String firstName, String lastName, ReportCriterion reportCriterion, BigDecimal criterionValue) {
+public record EmployeeReportDto(Long id, String firstName, String lastName, ReportCriterion reportCriterion, Float criterionValue) {
 
     @Override
     public String toString() {
