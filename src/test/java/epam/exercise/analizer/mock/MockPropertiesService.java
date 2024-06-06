@@ -1,4 +1,4 @@
-package epam.exercise.analizer.helper;
+package epam.exercise.analizer.mock;
 
 import epam.exercise.analizer.service.PropertiesService;
 
@@ -9,11 +9,11 @@ import java.util.Map;
 /**
  * Mock implementation of PropertiesService as I can't use a Mockito :(
  */
-public class TestPropertiesService implements PropertiesService {
+public class MockPropertiesService implements PropertiesService {
     private final Map<String, String> properties = new HashMap<>();
 
 
-    public TestPropertiesService() {
+    public MockPropertiesService() {
         properties.put("app.employees_file_name", "test.csv");
     }
 

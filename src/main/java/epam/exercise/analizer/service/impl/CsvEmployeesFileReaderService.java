@@ -63,20 +63,17 @@ public class CsvEmployeesFileReaderService implements EmployeesFileReaderService
 
 
     /**
-     * Private method to encapsulate all steps of reading csv information
+     * Private method to encapsulate pipeline of reading csv file information
      * from {@link BufferedReader} lines to {@link EmployeeInputDto}
      *
      * @param bufferedReader reader with csv file information
      * @return a map where key is Employee id, and value is {@link EmployeeInputDto}
      */
     private Map<Long, EmployeeInputDto> readCsvToMap(BufferedReader bufferedReader) {
-        Map<Long, EmployeeInputDto> employees;
-        employees = bufferedReader.lines()
-                .skip(1)
+        return bufferedReader.lines()
+                .skip(1) // skip header line
                 .map(this::parseLineToEmployeeInputDto)
                 .collect(Collectors.toMap(EmployeeInputDto::id, Function.identity()));
-
-        return employees;
     }
 
     /**
@@ -114,11 +111,11 @@ public class CsvEmployeesFileReaderService implements EmployeesFileReaderService
             return new EmployeeInputDto(
                     Long.valueOf(lineParts[ID_PLACEHOLDER]),
                     lineParts.length > MANAGER_ID_PLACEHOLDER ? Long.valueOf(lineParts[MANAGER_ID_PLACEHOLDER]) : null,
-                    lineParts.length > FIRST_NAME_PLACEHOLDER ? lineParts[FIRST_NAME_PLACEHOLDER] : null,
-                    lineParts.length > LAST_NAME_PLACEHOLDER ? lineParts[LAST_NAME_PLACEHOLDER] : null,
-                    lineParts.length > LAST_NAME_PLACEHOLDER ? new BigDecimal(lineParts[SALARY_PLACEHOLDER]) : null
+                    lineParts[FIRST_NAME_PLACEHOLDER],
+                    lineParts[LAST_NAME_PLACEHOLDER],
+                    new BigDecimal(lineParts[SALARY_PLACEHOLDER])
             );
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | IndexOutOfBoundsException e) {
             throw new ReportCreationException(String.format("Failed to parse line %s, please check your csv file. Report creation interrupted.", line));
         }
     }
