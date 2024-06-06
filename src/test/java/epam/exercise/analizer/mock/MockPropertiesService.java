@@ -7,7 +7,7 @@ import java.util.Map;
 
 
 /**
- * Mock implementation of PropertiesService as I can't use a Mockito :(
+ * Mock implementation of {@link PropertiesService} as I can't use a Mockito :(
  */
 public class MockPropertiesService implements PropertiesService {
     private final Map<String, String> properties = new HashMap<>();

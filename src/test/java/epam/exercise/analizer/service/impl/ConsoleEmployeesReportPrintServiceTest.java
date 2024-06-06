@@ -41,15 +41,15 @@ class ConsoleEmployeesReportPrintServiceTest {
 
         String expectedOutput = """
                 *** Report of organizational structure of employees ***
-
+                                
                 Overpaid employees related to direct subordinates average salary:
-                    Employees by this criteria not found.
-                
+                	Employees by this criteria not found.
+                                
                 Underpaid employees related to direct subordinates average salary:
-                    Employees by this criteria not found.
-                
+                	Employees by this criteria not found.
+                                
                 Employees with too long reporting line to CEO:
-                    Employees by this criteria not found.""";
+                	Employees by this criteria not found.""";
         assertEquals(expectedOutput, outContent.toString().trim());
     }
 
