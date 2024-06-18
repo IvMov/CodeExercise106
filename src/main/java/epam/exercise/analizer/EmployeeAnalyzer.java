@@ -10,6 +10,11 @@ import epam.exercise.analizer.service.impl.*;
  * More specific information in readme.md file.
  */
 public class EmployeeAnalyzer {
+
+    /**
+     *  Please be sure that you place file in correct location or adjust properties file,
+     *  for more info please check `README.MD`.
+     */
     private static final String PROPERTIES_FILE_NAME = "application.properties";
 
     /**

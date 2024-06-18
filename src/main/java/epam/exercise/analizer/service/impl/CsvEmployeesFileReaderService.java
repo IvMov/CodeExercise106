@@ -60,7 +60,7 @@ public class CsvEmployeesFileReaderService implements EmployeesFileReaderService
                 return readCsvToMap(reader);
             }
         } catch (IOException | ReportCreationException e) {
-            LOGGER.warning(String.format("Failed to read adn validate csv file. File expected path and name: %s%s", filePath, fileName));
+            LOGGER.warning(String.format("Failed to read and validate csv file. File expected path and name: %s%s", filePath, fileName));
             throw new ReportCreationException(e.getMessage());
         }
     }
@@ -90,7 +90,7 @@ public class CsvEmployeesFileReaderService implements EmployeesFileReaderService
         if (filePath == null || "/".equals(filePath)) {
             LOGGER.warning("File path property: app.employees_file_path is empty. Will be used default root path : " + ROOT_SLASH);
             filePath = ROOT_SLASH;
-        } else {
+        } else if (!filePath.startsWith("ROOT_SLASH")) {
             filePath = ROOT_SLASH + filePath;
         }
 
@@ -173,7 +173,7 @@ public class CsvEmployeesFileReaderService implements EmployeesFileReaderService
     private void validateEmployee(EmployeeInputDto employee) throws ReportCreationException {
         if (employee.salary().compareTo(BigDecimal.ZERO) < 0) {
             throw new ReportCreationException("Failed to create report - negative salary not allowed, please fix the file.");
-        } else if (employee.id().equals(employee.managerId())){
+        } else if (employee.id().equals(employee.managerId())) {
             throw new ReportCreationException("Failed to create report - employee cant be his own manager, please fix the file.");
         }
         // add other custom validation if neccessary
