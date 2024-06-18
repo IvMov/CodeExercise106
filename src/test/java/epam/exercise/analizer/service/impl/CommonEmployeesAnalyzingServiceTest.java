@@ -2,6 +2,7 @@ package epam.exercise.analizer.service.impl;
 
 import epam.exercise.analizer.dto.EmployeeInputDto;
 import epam.exercise.analizer.dto.EmployeeReportDto;
+import epam.exercise.analizer.exception.ReportCreationException;
 import epam.exercise.analizer.mapper.EmployeeMapper;
 import epam.exercise.analizer.mock.MockEmployeeMapper;
 import epam.exercise.analizer.report.ReportCriterion;
@@ -32,10 +33,10 @@ class CommonEmployeesAnalyzingServiceTest {
 
     @Test
     void analyzeEmployees_WhenOverpaidCeo_ExpectOverpaidContainCeo() {
-        Map<Long, EmployeeInputDto> employee = getTestEmployees();
-        employee.put(1L, new EmployeeInputDto(1L, null, "name1", "lastName1", BigDecimal.valueOf(150000)));
+        Map<Long, EmployeeInputDto> employees = getTestEmployees();
+        employees.put(1L, new EmployeeInputDto(1L, null, "name1", "lastName1", BigDecimal.valueOf(150000)));
 
-        Map<ReportCriterion, List<EmployeeReportDto>> result = service.analyzeEmployees(employee);
+        Map<ReportCriterion, List<EmployeeReportDto>> result = service.analyzeEmployees(employees);
         List<EmployeeReportDto> overpaidResult = result.get(ReportCriterion.OVERPAID);
 
         assertFalse(overpaidResult.isEmpty());
@@ -50,10 +51,10 @@ class CommonEmployeesAnalyzingServiceTest {
 
     @Test
     void analyzeEmployees_WhenOverpaidCeo1pointOver_ExpectOverpaidContainCeo() {
-        Map<Long, EmployeeInputDto> employee = getTestEmployees();
-        employee.put(1L, new EmployeeInputDto(1L, null, "name1", "lastName1", BigDecimal.valueOf(112501)));
+        Map<Long, EmployeeInputDto> employees = getTestEmployees();
+        employees.put(1L, new EmployeeInputDto(1L, null, "name1", "lastName1", BigDecimal.valueOf(112501)));
 
-        Map<ReportCriterion, List<EmployeeReportDto>> result = service.analyzeEmployees(employee);
+        Map<ReportCriterion, List<EmployeeReportDto>> result = service.analyzeEmployees(employees);
         List<EmployeeReportDto> overpaidResult = result.get(ReportCriterion.OVERPAID);
 
         assertFalse(overpaidResult.isEmpty());
@@ -67,10 +68,10 @@ class CommonEmployeesAnalyzingServiceTest {
 
     @Test
     void analyzeEmployees_WhenCeoOn50ButNotOverpaid_ExpectEmptyReport() {
-        Map<Long, EmployeeInputDto> employee = getTestEmployees();
-        employee.put(1L, new EmployeeInputDto(1L, null, "name1", "lastName1", BigDecimal.valueOf(112500)));
+        Map<Long, EmployeeInputDto> employees = getTestEmployees();
+        employees.put(1L, new EmployeeInputDto(1L, null, "name1", "lastName1", BigDecimal.valueOf(112500)));
 
-        Map<ReportCriterion, List<EmployeeReportDto>> result = service.analyzeEmployees(employee);
+        Map<ReportCriterion, List<EmployeeReportDto>> result = service.analyzeEmployees(employees);
 
         assertTrue(result.get(ReportCriterion.OVERPAID).isEmpty());
         assertTrue(result.get(ReportCriterion.UNDERPAID).isEmpty());
@@ -79,10 +80,10 @@ class CommonEmployeesAnalyzingServiceTest {
 
     @Test
     void analyzeEmployees_WhenCeoUnderpaidBy1Point_ExpectUnderpaidContainCe() {
-        Map<Long, EmployeeInputDto> employee = getTestEmployees();
-        employee.put(1L, new EmployeeInputDto(1L, null, "name1", "lastName1", BigDecimal.valueOf(89999)));
+        Map<Long, EmployeeInputDto> employees = getTestEmployees();
+        employees.put(1L, new EmployeeInputDto(1L, null, "name1", "lastName1", BigDecimal.valueOf(89999)));
 
-        Map<ReportCriterion, List<EmployeeReportDto>> result = service.analyzeEmployees(employee);
+        Map<ReportCriterion, List<EmployeeReportDto>> result = service.analyzeEmployees(employees);
         List<EmployeeReportDto> underpaidResult = result.get(ReportCriterion.UNDERPAID);
 
         assertFalse(underpaidResult.isEmpty());
@@ -96,10 +97,10 @@ class CommonEmployeesAnalyzingServiceTest {
 
     @Test
     void analyzeEmployees_WhenCeoOn20ButNotUnderpaid_ExpectEmptyReport() {
-        Map<Long, EmployeeInputDto> employee = getTestEmployees();
-        employee.put(1L, new EmployeeInputDto(1L, null, "name1", "lastName1", BigDecimal.valueOf(90000)));
+        Map<Long, EmployeeInputDto> employees = getTestEmployees();
+        employees.put(1L, new EmployeeInputDto(1L, null, "name1", "lastName1", BigDecimal.valueOf(90000)));
 
-        Map<ReportCriterion, List<EmployeeReportDto>> result = service.analyzeEmployees(employee);
+        Map<ReportCriterion, List<EmployeeReportDto>> result = service.analyzeEmployees(employees);
 
         assertTrue(result.get(ReportCriterion.OVERPAID).isEmpty());
         assertTrue(result.get(ReportCriterion.UNDERPAID).isEmpty());
@@ -108,10 +109,10 @@ class CommonEmployeesAnalyzingServiceTest {
 
     @Test
     void analyzeEmployees_WhenUnderpaidCeo_ExpectUnderpaidContainCeo() {
-        Map<Long, EmployeeInputDto> employee = getTestEmployees();
-        employee.put(1L, new EmployeeInputDto(1L, null, "name1", "lastName1", BigDecimal.valueOf(82500)));
+        Map<Long, EmployeeInputDto> employees = getTestEmployees();
+        employees.put(1L, new EmployeeInputDto(1L, null, "name1", "lastName1", BigDecimal.valueOf(82500)));
 
-        Map<ReportCriterion, List<EmployeeReportDto>> result = service.analyzeEmployees(employee);
+        Map<ReportCriterion, List<EmployeeReportDto>> result = service.analyzeEmployees(employees);
         List<EmployeeReportDto> underpaidResult = result.get(ReportCriterion.UNDERPAID);
 
         assertFalse(underpaidResult.isEmpty());
@@ -126,10 +127,10 @@ class CommonEmployeesAnalyzingServiceTest {
 
     @Test
     void analyzeEmployees_WhenUnderpaidCeoHaveDirectSubordinates_ExpectUnderpaidContainCeo() {
-        Map<Long, EmployeeInputDto> employee = getTestEmployees();
-        employee.put(3L, new EmployeeInputDto(3L, 1L, "name3", "lastName3", BigDecimal.valueOf(100000)));
+        Map<Long, EmployeeInputDto> employees = getTestEmployees();
+        employees.put(3L, new EmployeeInputDto(3L, 1L, "name3", "lastName3", BigDecimal.valueOf(100000)));
 
-        Map<ReportCriterion, List<EmployeeReportDto>> result = service.analyzeEmployees(employee);
+        Map<ReportCriterion, List<EmployeeReportDto>> result = service.analyzeEmployees(employees);
         List<EmployeeReportDto> underpaidResult = result.get(ReportCriterion.UNDERPAID);
         List<EmployeeReportDto> overpaidResult = result.get(ReportCriterion.OVERPAID);
 
@@ -150,20 +151,33 @@ class CommonEmployeesAnalyzingServiceTest {
 
     @Test
     void analyzeEmployees_whenSomeEmployeeHasTooLongReportingLine_TooLongReportingLineContainEmployee() {
-        Map<Long, EmployeeInputDto> employee = getTestEmployees();
-        employee.put(6L, new EmployeeInputDto(6L, 5L, "name6", "lastName6", BigDecimal.valueOf(25000)));
+        Map<Long, EmployeeInputDto> employees = getTestEmployees();
+        employees.put(6L, new EmployeeInputDto(6L, 5L, "name6", "lastName6", BigDecimal.valueOf(25000)));
+        employees.put(7L, new EmployeeInputDto(7L, 6L, "name7", "lastName7", BigDecimal.valueOf(20000)));
 
-        Map<ReportCriterion, List<EmployeeReportDto>> result = service.analyzeEmployees(employee);
+        Map<ReportCriterion, List<EmployeeReportDto>> result = service.analyzeEmployees(employees);
         List<EmployeeReportDto> tooLongReportingLine = result.get(ReportCriterion.TOO_LONG_REPORTING_LINE);
 
         assertFalse(tooLongReportingLine.isEmpty());
         assertEquals(1, tooLongReportingLine.size());
-        assertEquals(6L, tooLongReportingLine.getFirst().id());
-        assertEquals(6L, tooLongReportingLine.getFirst().id());
+        assertEquals(7L, tooLongReportingLine.getFirst().id());
+        assertEquals(7L, tooLongReportingLine.getFirst().id());
         assertEquals(1.0f, tooLongReportingLine.getFirst().criterionValue());
 
         assertTrue(result.get(ReportCriterion.OVERPAID).isEmpty());
         assertTrue(result.get(ReportCriterion.UNDERPAID).isEmpty());
+    }
+
+    @Test
+    void analyzeEmployees_whenCEONotReachable_ThrowException() {
+        String expectedMessage = "Can't find path to CEO for employee id: 6. Please check the input data correctness.";
+        Map<Long, EmployeeInputDto> employees = getTestEmployees();
+        employees.put(6L, new EmployeeInputDto(6L, 7L, "name6", "lastName6", BigDecimal.valueOf(25000)));
+        employees.put(7L, new EmployeeInputDto(7L, 6L, "name7", "lastName7", BigDecimal.valueOf(20000)));
+
+        Throwable exception = assertThrows(ReportCreationException.class, () -> service.analyzeEmployees(employees));
+
+        assertEquals(expectedMessage, exception.getMessage());
     }
 
 

@@ -2,6 +2,7 @@ package epam.exercise.analizer.service.impl;
 
 import epam.exercise.analizer.dto.EmployeeInputDto;
 import epam.exercise.analizer.dto.EmployeeReportDto;
+import epam.exercise.analizer.exception.ReportCreationException;
 import epam.exercise.analizer.mapper.EmployeeMapper;
 import epam.exercise.analizer.report.ReportCriterion;
 import epam.exercise.analizer.service.EmployeesAnalyzingService;
@@ -123,27 +124,48 @@ public class CommonEmployeesAnalyzingService implements EmployeesAnalyzingServic
     }
 
     /**
-     * Private method length of reporting distance to CEO
+     * Private method to find length of reporting distance to CEO
      *
      * @param employees all employees
      */
     private int calcManagerDistance(EmployeeInputDto employee, Map<Long, EmployeeInputDto> employees) {
         Long managerId = employee.managerId();
+        EmployeeInputDto nextManager;
         int managerDistance = 0;
         int maxRounds = employees.size();
 
-        while (managerId != null || maxRounds <= 0) {
+        while (managerId != null) {
+            nextManager = employees.get(managerId);
             maxRounds--;
-            managerDistance++;
+            validateCircleDependencies(employee, maxRounds);
+
+            if (nextManager.managerId() != null) {
+                managerDistance++;
+            }
             if (knownManagerDistanceByIdMap.containsKey(managerId)) {
                 managerDistance += knownManagerDistanceByIdMap.get(managerId);
                 break;
             }
-            managerId = employees.get(managerId).managerId();
+            managerId = nextManager.managerId();
         }
         knownManagerDistanceByIdMap.put(employee.id(), managerDistance);
 
         return managerDistance;
+    }
+
+    /**
+     * Private method to check circle dependencies if all employees checked but CEO path still not found
+     *
+     * @param employee  all employees
+     * @param maxRounds init value as size of employees collection
+     */
+    private static void validateCircleDependencies(EmployeeInputDto employee, int maxRounds) {
+        if (maxRounds <= 0) {
+            throw new ReportCreationException(
+                    String.format("Can't find path to CEO for employee id: %d. Please check the input data correctness.",
+                            employee.id())
+            );
+        }
     }
 }
 

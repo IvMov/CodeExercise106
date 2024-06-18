@@ -7,6 +7,10 @@ Id,firstName,lastName,salary,managerId
 5,Etti,Taylor,48000,4
 6,Steve,Martin,51000,5
 7,John,Anderson,55000,6
-8,Evo,Lopez,56000,7
+8,Evo,Lopez,35000,7
 9,Huso, Sanchez,40800,8
 10,Huso, Sanchez,34000,9
+11,Huso, Sanchez,34000,9
+12,Huso, Sanchez,50000,9
+13,Huso, Sanchez,33000,6
+14,Huso, Sanchez,40000,6
