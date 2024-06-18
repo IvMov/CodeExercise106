@@ -17,8 +17,34 @@ class CsvEmployeesFileReaderServiceTest {
 
 
     @Test
-    void readEmployeesFile_fileValidAndExist_expectResults() {
+    void readEmployeesFile_fileValidAndExistInRootButNoPropertyWithPath_expectResultsPathSettedToRoot() {
+        mockPropertiesService.setProperty("app.employees_file_name", "rootTestFile.csv");
+
+        Map<Long, EmployeeInputDto> result = service.readEmployeesFile();
+
+        assertNotNull(result);
+        assertEquals("Hasacat", result.get((long) 300).lastName());
+        assertNull(result.get((long) 123).managerId());
+        assertEquals(5, result.size());
+    }
+
+    @Test
+    void readEmployeesFile_fileValidAndExistInRoot_expectResults() {
+        mockPropertiesService.setProperty("app.employees_file_name", "rootTestFile.csv");
+        mockPropertiesService.setProperty("app.employees_file_path", "/");
+
+        Map<Long, EmployeeInputDto> result = service.readEmployeesFile();
+
+        assertNotNull(result);
+        assertEquals("Hasacat", result.get((long) 300).lastName());
+        assertNull(result.get((long) 123).managerId());
+        assertEquals(5, result.size());
+    }
+
+    @Test
+    void readEmployeesFile_fileValidAndExistInFolder_expectResults() {
         mockPropertiesService.setProperty("app.employees_file_name", "test.csv");
+        mockPropertiesService.setProperty("app.employees_file_path", "someFolder/");
 
         Map<Long, EmployeeInputDto> result = service.readEmployeesFile();
 

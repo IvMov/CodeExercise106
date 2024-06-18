@@ -24,7 +24,10 @@ public class CsvEmployeesFileReaderService implements EmployeesFileReaderService
 
     private static final Logger LOGGER = Logger.getLogger(CsvEmployeesFileReaderService.class.getName());
 
+    private static final String DEFAULT_FILE_NAME = "employees.csv";
+    private static final String FILE_PATH_PROPERTY = "app.employees_file_path";
     private static final String FILE_NAME_PROPERTY = "app.employees_file_name";
+    private static final String ROOT_SLASH = "/";
     private static final String COMMA_DELIMITER = ",";
 
     private static final byte ID_PLACEHOLDER = 0;
@@ -48,19 +51,51 @@ public class CsvEmployeesFileReaderService implements EmployeesFileReaderService
 
     @Override
     public Map<Long, EmployeeInputDto> readEmployeesFile() throws ReportCreationException {
-        String fileName = propertiesService.getProperty(FILE_NAME_PROPERTY);
+        String filePath = getFilePath();
+        String fileName = getFileName();
 
-        try (InputStream inputStream = CsvEmployeesFileReaderService.class.getResourceAsStream("/" + fileName)) {
+        try (InputStream inputStream = CsvEmployeesFileReaderService.class.getResourceAsStream(filePath + fileName)) {
             validateFile(fileName, inputStream);
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
                 return readCsvToMap(reader);
             }
         } catch (IOException | ReportCreationException e) {
-            LOGGER.warning("Failed to read csv file.");
+            LOGGER.warning(String.format("Failed to read csv file. File expected path and name: %s%s", filePath, fileName));
             throw new ReportCreationException(e.getMessage());
         }
     }
 
+
+    /**
+     * Private method to ensure file name is defined, or use the default value
+     *
+     * @return file name
+     */
+    private String getFileName() {
+        String fileName = propertiesService.getProperty(FILE_NAME_PROPERTY);
+        if (fileName == null) {
+            LOGGER.warning("Failed to read file name property . Will be used default name : " + DEFAULT_FILE_NAME);
+            fileName = DEFAULT_FILE_NAME;
+        }
+        return fileName;
+    }
+
+    /**
+     * Private method building the path to file as resource.
+     *
+     * @return file path
+     */
+    private String getFilePath() {
+        String filePath = propertiesService.getProperty(FILE_PATH_PROPERTY);
+        if (filePath == null || "/".equals(filePath)) {
+            LOGGER.warning("File path property: app.employees_file_path is empty. Will be used default root path : " + ROOT_SLASH);
+            filePath = ROOT_SLASH;
+        } else {
+            filePath = ROOT_SLASH + filePath;
+        }
+
+        return filePath;
+    }
 
     /**
      * Private method to encapsulate pipeline of reading csv file information
