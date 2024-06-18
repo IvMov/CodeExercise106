@@ -41,7 +41,7 @@ class CommonEmployeesReportServiceTest {
     void createEmployeesReport_allServicesWorksConsistantly_resultIsPrinted() {
         service.createEmployeesReport();
 
-        String expectedOutput = "Employee: id: 1, first name: name, last name: surname, deviation: 0.10000";
+        String expectedOutput = "Employee: id: 1, first name: name, last name: surname, deviation: 0.10";
         assertEquals(expectedOutput, outContent.toString().trim());
     }
 }

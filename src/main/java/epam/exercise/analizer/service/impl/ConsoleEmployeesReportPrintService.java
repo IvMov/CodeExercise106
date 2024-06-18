@@ -83,10 +83,10 @@ public class ConsoleEmployeesReportPrintService implements EmployeesReportPrintS
                 return "IMPORTANT: Deviation number means how many persons more than max persons threshold allowed.";
             }
             case UNDERPAID -> {
-                return "IMPORTANT: Deviation number mean - by how much (in percentage) employee earns less then min salary range threshold is.";
+                return "IMPORTANT: Deviation number mean - by how much employee earns less then min salary range threshold is.";
             }
             case OVERPAID -> {
-                return "IMPORTANT: Deviation number mean - by how much (in percentage) employee earns more then max salary range threshold is.";
+                return "IMPORTANT: Deviation number mean - by how much employee earns more then max salary range threshold is.";
             }
             default -> {
                 return "Unknown report criterion.\n";
