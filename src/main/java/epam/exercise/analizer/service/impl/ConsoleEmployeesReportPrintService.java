@@ -80,13 +80,13 @@ public class ConsoleEmployeesReportPrintService implements EmployeesReportPrintS
     private String getCriterionDeviationExplanation(ReportCriterion criterion) {
         switch (criterion) {
             case TOO_LONG_REPORTING_LINE -> {
-                return "IMPORTANT: Deviation number means how many persons more than max persons threshold allowed.";
+                return "IMPORTANT: Deviation number means - by how many managers more than max managers allowed between them and the CEO.";
             }
             case UNDERPAID -> {
-                return "IMPORTANT: Deviation number mean - by how much employee earns less then min salary range threshold is.";
+                return "IMPORTANT: Deviation number means - by how much employee earns less then min salary range threshold is.";
             }
             case OVERPAID -> {
-                return "IMPORTANT: Deviation number mean - by how much employee earns more then max salary range threshold is.";
+                return "IMPORTANT: Deviation number means - by how much employee earns more then max salary range threshold is.";
             }
             default -> {
                 return "Unknown report criterion.\n";

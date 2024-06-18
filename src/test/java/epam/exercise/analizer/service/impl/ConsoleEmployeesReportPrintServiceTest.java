@@ -67,15 +67,15 @@ class ConsoleEmployeesReportPrintServiceTest {
                                 
                 Overpaid employees related to direct subordinates average salary:
                 	Employee: id: 1, first name: Fake, last name: Fake, deviation: 10.00
-                	IMPORTANT: Deviation number mean - by how much employee earns more then max salary range threshold is.
+                	IMPORTANT: Deviation number means - by how much employee earns more then max salary range threshold is.
                                 
                 Underpaid employees related to direct subordinates average salary:
                 	Employee: id: 1, first name: Fake, last name: Fake, deviation: 10.00
-                	IMPORTANT: Deviation number mean - by how much employee earns less then min salary range threshold is.
+                	IMPORTANT: Deviation number means - by how much employee earns less then min salary range threshold is.
                                 
                 Employees with too long reporting line to CEO:
                 	Employee: id: 1, first name: Fake, last name: Fake, deviation: 2
-                	IMPORTANT: Deviation number means how many persons more than max persons threshold allowed.""";
+                	IMPORTANT: Deviation number means - by how many managers more than max managers allowed between them and the CEO.""";
         assertEquals(expectedOutput, outContent.toString().trim());
 
     }
@@ -97,7 +97,7 @@ class ConsoleEmployeesReportPrintServiceTest {
                 Underpaid employees related to direct subordinates average salary:
                 	Employee: id: 1, first name: Fake, last name: Fake, deviation: 10.00
                 	Employee: id: 2, first name: Fake2, last name: Fake2, deviation: 15.00
-                	IMPORTANT: Deviation number mean - by how much employee earns less then min salary range threshold is.
+                	IMPORTANT: Deviation number means - by how much employee earns less then min salary range threshold is.
                                 
                 Employees with too long reporting line to CEO:
                 	Employees by this criteria not found.""";
