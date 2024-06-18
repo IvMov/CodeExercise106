@@ -60,7 +60,7 @@ public class CsvEmployeesFileReaderService implements EmployeesFileReaderService
                 return readCsvToMap(reader);
             }
         } catch (IOException | ReportCreationException e) {
-            LOGGER.warning(String.format("Failed to read csv file. File expected path and name: %s%s", filePath, fileName));
+            LOGGER.warning(String.format("Failed to read adn validate csv file. File expected path and name: %s%s", filePath, fileName));
             throw new ReportCreationException(e.getMessage());
         }
     }
@@ -143,16 +143,39 @@ public class CsvEmployeesFileReaderService implements EmployeesFileReaderService
         String[] lineParts = line.split(COMMA_DELIMITER);
 
         try {
-            return new EmployeeInputDto(
+            BigDecimal salary = new BigDecimal(lineParts[SALARY_PLACEHOLDER]);
+            EmployeeInputDto employeeInputDto = new EmployeeInputDto(
                     Long.valueOf(lineParts[ID_PLACEHOLDER]),
                     lineParts.length > MANAGER_ID_PLACEHOLDER ? Long.valueOf(lineParts[MANAGER_ID_PLACEHOLDER]) : null,
                     lineParts[FIRST_NAME_PLACEHOLDER],
                     lineParts[LAST_NAME_PLACEHOLDER],
                     new BigDecimal(lineParts[SALARY_PLACEHOLDER])
             );
+            validateEmployee(employeeInputDto);
+            return new EmployeeInputDto(
+                    Long.valueOf(lineParts[ID_PLACEHOLDER]),
+                    lineParts.length > MANAGER_ID_PLACEHOLDER ? Long.valueOf(lineParts[MANAGER_ID_PLACEHOLDER]) : null,
+                    lineParts[FIRST_NAME_PLACEHOLDER],
+                    lineParts[LAST_NAME_PLACEHOLDER],
+                    salary
+            );
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
             throw new ReportCreationException(String.format("Failed to parse line %s, please check your csv file. Report creation interrupted.", line));
         }
     }
 
+    /**
+     * Private custom employee validation
+     *
+     * @param employee subject of validation
+     * @throws ReportCreationException in case if not valid employee
+     */
+    private void validateEmployee(EmployeeInputDto employee) throws ReportCreationException {
+        if (employee.salary().compareTo(BigDecimal.ZERO) < 0) {
+            throw new ReportCreationException("Failed to create report - negative salary not allowed, please fix the file.");
+        } else if (employee.id().equals(employee.managerId())){
+            throw new ReportCreationException("Failed to create report - employee cant be his own manager, please fix the file.");
+        }
+        // add other custom validation if neccessary
+    }
 }

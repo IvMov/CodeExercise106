@@ -18,7 +18,7 @@ class CsvEmployeesFileReaderServiceTest {
 
     @Test
     void readEmployeesFile_fileValidAndExistInRootButNoPropertyWithPath_expectResultsPathSettedToRoot() {
-        mockPropertiesService.setProperty("app.employees_file_name", "rootTestFile.csv");
+        mockPropertiesService.setProperty("app.employees_file_name", "root_test_file.csv");
 
         Map<Long, EmployeeInputDto> result = service.readEmployeesFile();
 
@@ -30,7 +30,7 @@ class CsvEmployeesFileReaderServiceTest {
 
     @Test
     void readEmployeesFile_fileValidAndExistInRoot_expectResults() {
-        mockPropertiesService.setProperty("app.employees_file_name", "rootTestFile.csv");
+        mockPropertiesService.setProperty("app.employees_file_name", "root_test_file.csv");
         mockPropertiesService.setProperty("app.employees_file_path", "/");
 
         Map<Long, EmployeeInputDto> result = service.readEmployeesFile();
@@ -78,6 +78,26 @@ class CsvEmployeesFileReaderServiceTest {
     void readEmployeesFile_fileBroken_expectExceptionThrown() {
         String expectedMessage = "Failed to parse line 124,Martin,Chekov,45000,123d, please check your csv file. Report creation interrupted.";
         mockPropertiesService.setProperty("app.employees_file_name", "test_broken_data.csv");
+
+        Throwable exception = assertThrows(ReportCreationException.class, () -> service.readEmployeesFile());
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
+    void readEmployeesFile_ivalidNegativeSalary_expectExceptionThrown() {
+        String expectedMessage = "Failed to create report - negative salary not allowed, please fix the file.";
+        mockPropertiesService.setProperty("app.employees_file_name", "test_negative_salary.csv");
+
+        Throwable exception = assertThrows(ReportCreationException.class, () -> service.readEmployeesFile());
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
+    void readEmployeesFile_ivalidManagerId_expectExceptionThrown() {
+        String expectedMessage = "Failed to create report - employee cant be his own manager, please fix the file.";
+        mockPropertiesService.setProperty("app.employees_file_name", "test_id_equals_manager_id.csv");
 
         Throwable exception = assertThrows(ReportCreationException.class, () -> service.readEmployeesFile());
 

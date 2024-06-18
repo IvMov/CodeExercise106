@@ -14,7 +14,7 @@ public class MockPropertiesService implements PropertiesService {
 
 
     public MockPropertiesService() {
-        properties.put("app.employees_file_name", "rootTestFile.csv");
+        properties.put("app.employees_file_name", "root_test_file.csv");
     }
 
 
