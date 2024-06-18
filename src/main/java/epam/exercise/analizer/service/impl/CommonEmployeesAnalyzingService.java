@@ -17,10 +17,9 @@ import java.util.stream.Collectors;
  */
 public class CommonEmployeesAnalyzingService implements EmployeesAnalyzingService {
 
-    private static final float UNDERPAID_LIMIT = 20.0f;
-    private static final float OVERPAID_LIMIT = 50.0f;
+    private static final float UNDERPAID_LIMIT = 0.2f;
+    private static final float OVERPAID_LIMIT = 0.5f;
     private static final int REPORTING_LINE_LIMIT = 4;
-    private static final int SALARY_DIVISION_SCALE = 5;
 
     private final EmployeeMapper employeeMapper;
     private final Map<Long, Integer> knownManagerDistanceByIdMap;
@@ -48,8 +47,8 @@ public class CommonEmployeesAnalyzingService implements EmployeesAnalyzingServic
     /**
      * Private method to analyze to prepare employee data for analysis
      *
-     * @param employees          all employees
-     * @param employee           subject of analysis
+     * @param employees all employees
+     * @param employee  subject of analysis
      */
     private void analyzeEmployee(Map<Long, EmployeeInputDto> employees, EmployeeInputDto employee) {
         int managerDistance = calcManagerDistance(employee, employees);
@@ -57,13 +56,7 @@ public class CommonEmployeesAnalyzingService implements EmployeesAnalyzingServic
 
         if (averageSubSalariesByManager.containsKey(employee.id())) {
             BigDecimal avgSubordinatesSalary = averageSubSalariesByManager.get(employee.id());
-            Float salaryDifferencePercentage = employee.salary()
-                    .divide(avgSubordinatesSalary, SALARY_DIVISION_SCALE, RoundingMode.HALF_UP)
-                    .subtract(BigDecimal.ONE) //subtract 1 (100%)
-                    .multiply(BigDecimal.valueOf(100)) //100%
-                    .floatValue();
-
-            checkIfUnappropriatedSalary(employee, salaryDifferencePercentage);
+            checkIfUnappropriatedSalary(employee, avgSubordinatesSalary);
         }
         checkIfTooLongReportingLine(employee, managerDistance);
     }
@@ -71,16 +64,20 @@ public class CommonEmployeesAnalyzingService implements EmployeesAnalyzingServic
     /**
      * Private method to check is salary of subject employee is unappropriate
      *
-     * @param employee                   subject of analysis
-     * @param salaryDifferencePercentage percentage of how much employee salary is more that AVERAGE salary of his direct subordinates
+     * @param employee              subject of analysis
+     * @param avgSubordinatesSalary average salary of direct subordinates
      */
-    private void checkIfUnappropriatedSalary(EmployeeInputDto employee, Float salaryDifferencePercentage) {
-        if (salaryDifferencePercentage < UNDERPAID_LIMIT) {
+    private void checkIfUnappropriatedSalary(EmployeeInputDto employee, BigDecimal avgSubordinatesSalary) {
+        BigDecimal minRequiredSalary = avgSubordinatesSalary.add(avgSubordinatesSalary.multiply(BigDecimal.valueOf(UNDERPAID_LIMIT)))
+                .setScale(3, RoundingMode.HALF_UP);
+        BigDecimal maxRequiredSalary = avgSubordinatesSalary.add(avgSubordinatesSalary.multiply(BigDecimal.valueOf(OVERPAID_LIMIT)))
+                .setScale(3, RoundingMode.HALF_UP);
+        if (employee.salary().compareTo(minRequiredSalary) < 0) {
             reportDataMap.get(ReportCriterion.UNDERPAID)
-                    .add(employeeMapper.mapToReportDto(employee, ReportCriterion.UNDERPAID, salaryDifferencePercentage - UNDERPAID_LIMIT));
-        } else if (salaryDifferencePercentage > OVERPAID_LIMIT) {
+                    .add(employeeMapper.mapToReportDto(employee, ReportCriterion.UNDERPAID, minRequiredSalary.subtract(employee.salary()).floatValue()));
+        } else if (employee.salary().compareTo(maxRequiredSalary) > 0) {
             reportDataMap.get(ReportCriterion.OVERPAID)
-                    .add(employeeMapper.mapToReportDto(employee, ReportCriterion.OVERPAID, salaryDifferencePercentage - OVERPAID_LIMIT));
+                    .add(employeeMapper.mapToReportDto(employee, ReportCriterion.OVERPAID, employee.salary().subtract(maxRequiredSalary).floatValue()));
         }
     }
 
@@ -114,7 +111,7 @@ public class CommonEmployeesAnalyzingService implements EmployeesAnalyzingServic
     /**
      * Private method for calculating an average subordinates salary
      *
-     * @param employees        all employees
+     * @param employees all employees
      */
     private Map<Long, BigDecimal> calcAvgSubordinatesSalaries(Map<Long, EmployeeInputDto> employees) {
         return employees.values().stream()
@@ -128,7 +125,7 @@ public class CommonEmployeesAnalyzingService implements EmployeesAnalyzingServic
     /**
      * Private method length of reporting distance to CEO
      *
-     * @param employees        all employees
+     * @param employees all employees
      */
     private int calcManagerDistance(EmployeeInputDto employee, Map<Long, EmployeeInputDto> employees) {
         Long managerId = employee.managerId();

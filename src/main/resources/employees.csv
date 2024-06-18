@@ -1,6 +1,12 @@
 Id,firstName,lastName,salary,managerId
-123,Joe,Doe,60000,
-124,Martin,Chekov,45000,123
-125,Bob,Ronstad,47000,123
-300,Alice,Hasacat,50000,124
-305,Brett,Hardleaf,34000,300
+0,Joe,Doe,60000,
+1,Martin,Chekov,45000,0
+2,Bob,Ronstad,47000,1
+3,Alice,Hasacat,57000,2
+4,Bruce, Lee,34000,3
+5,Etti,Taylor,48000,4
+6,Steve,Martin,51000,5
+7,John,Anderson,55000,6
+8,Evo,Lopez,56000,7
+9,Huso, Sanchez,40800,8
+10,Huso, Sanchez,34000,9

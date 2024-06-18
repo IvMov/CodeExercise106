@@ -42,7 +42,7 @@ class CommonEmployeesAnalyzingServiceTest {
         assertEquals(1, overpaidResult.size());
         assertEquals(1L, overpaidResult.getFirst().id());
         assertEquals(1L, overpaidResult.getFirst().id());
-        assertEquals(50f, overpaidResult.getFirst().criterionValue());
+        assertEquals(37500f, overpaidResult.getFirst().criterionValue());
 
         assertTrue(result.get(ReportCriterion.UNDERPAID).isEmpty());
         assertTrue(result.get(ReportCriterion.TOO_LONG_REPORTING_LINE).isEmpty());
@@ -118,7 +118,7 @@ class CommonEmployeesAnalyzingServiceTest {
         assertEquals(1, underpaidResult.size());
         assertEquals(1L, underpaidResult.getFirst().id());
         assertEquals(1L, underpaidResult.getFirst().id());
-        assertEquals(-10.0f, underpaidResult.getFirst().criterionValue());
+        assertEquals(7500.0f, underpaidResult.getFirst().criterionValue());
 
         assertTrue(result.get(ReportCriterion.OVERPAID).isEmpty());
         assertTrue(result.get(ReportCriterion.TOO_LONG_REPORTING_LINE).isEmpty());
@@ -137,13 +137,13 @@ class CommonEmployeesAnalyzingServiceTest {
         assertEquals(1, underpaidResult.size());
         assertEquals(1L, underpaidResult.getFirst().id());
         assertEquals(1L, underpaidResult.getFirst().id());
-        assertEquals(-5.7139997f, underpaidResult.getFirst().criterionValue());
+        assertEquals(5000.0f, underpaidResult.getFirst().criterionValue());
 
         assertFalse(overpaidResult.isEmpty());
         assertEquals(1, overpaidResult.size());
         assertEquals(3L, overpaidResult.getFirst().id());
         assertEquals(3L, overpaidResult.getFirst().id());
-        assertEquals(87.037f, overpaidResult.getFirst().criterionValue());
+        assertEquals(36718.75f, overpaidResult.getFirst().criterionValue());
 
         assertTrue(result.get(ReportCriterion.TOO_LONG_REPORTING_LINE).isEmpty());
     }
