@@ -66,15 +66,15 @@ class ConsoleEmployeesReportPrintServiceTest {
                 *** Report of organizational structure of employees ***
                                 
                 Overpaid employees related to direct subordinates average salary:
-                	Employee: id: 1, first name: Fake, last name: Fake, deviation: 10.00000
-                	IMPORTANT: Deviation number mean - by how much (in percentage) employee earns more then max salary range threshold is.
+                	Employee: id: 1, first name: Fake, last name: Fake, deviation: 10.00
+                	IMPORTANT: Deviation number mean - by how much employee earns more then max salary range threshold is.
                                 
                 Underpaid employees related to direct subordinates average salary:
-                	Employee: id: 1, first name: Fake, last name: Fake, deviation: 10.00000
-                	IMPORTANT: Deviation number mean - by how much (in percentage) employee earns less then min salary range threshold is.
+                	Employee: id: 1, first name: Fake, last name: Fake, deviation: 10.00
+                	IMPORTANT: Deviation number mean - by how much employee earns less then min salary range threshold is.
                                 
                 Employees with too long reporting line to CEO:
-                	Employee: id: 1, first name: Fake, last name: Fake, deviation: 2.00000
+                	Employee: id: 1, first name: Fake, last name: Fake, deviation: 2
                 	IMPORTANT: Deviation number means how many persons more than max persons threshold allowed.""";
         assertEquals(expectedOutput, outContent.toString().trim());
 
@@ -95,9 +95,9 @@ class ConsoleEmployeesReportPrintServiceTest {
                 	Employees by this criteria not found.
                                 
                 Underpaid employees related to direct subordinates average salary:
-                	Employee: id: 1, first name: Fake, last name: Fake, deviation: 10.00000
-                	Employee: id: 2, first name: Fake2, last name: Fake2, deviation: 15.00000
-                	IMPORTANT: Deviation number mean - by how much (in percentage) employee earns less then min salary range threshold is.
+                	Employee: id: 1, first name: Fake, last name: Fake, deviation: 10.00
+                	Employee: id: 2, first name: Fake2, last name: Fake2, deviation: 15.00
+                	IMPORTANT: Deviation number mean - by how much employee earns less then min salary range threshold is.
                                 
                 Employees with too long reporting line to CEO:
                 	Employees by this criteria not found.""";
